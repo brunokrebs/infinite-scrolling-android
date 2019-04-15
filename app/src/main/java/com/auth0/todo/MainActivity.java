@@ -1,40 +1,53 @@
 package com.auth0.todo;
 
 import android.os.Bundle;
-import android.widget.ListView;
-import com.auth0.todo.util.ToDoListAdapter;
-import android.content.Intent;
-import android.view.View;
 
-import com.auth0.todo.identity.AuthAwareActivity;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
+import androidx.paging.DataSource;
+import androidx.paging.LivePagedListBuilder;
+import androidx.paging.PagedList;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-public class MainActivity extends AuthAwareActivity {
-    private ToDoListAdapter toDoListAdapter;
+public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        final ListAdapter listAdapter = new ListAdapter(new DiffUtilCallback());
 
-        // create and configure the adapter
-        this.toDoListAdapter = new ToDoListAdapter(this);
-        ListView microPostsListView = findViewById(R.id.to_do_items);
-        microPostsListView.setAdapter(toDoListAdapter);
-    }
+        RecyclerView recyclerView = findViewById(R.id.recycler_view_jobs);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(listAdapter);
 
-    public void openToDoForm(View view) {
-        if (authenticationHandler.hasValidCredentials()) {
-            startActivityForResult(new Intent(this, ToDoFormActivity.class), 1);
-        }
-    }
+        PagedList.Config config = new PagedList.Config.Builder()
+                .setPageSize(15)
+                .setEnablePlaceholders(false)
+                .build();
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == 1) {
-            if (resultCode == RESULT_OK) {
-                String newItem = data.getStringExtra("item");
-                this.toDoListAdapter.addItem(newItem);
+        DataSource.Factory<String,JobModel> factory = new DataSource.Factory<String,JobModel>(){
+            @NonNull
+            @Override
+            public DataSource<String, JobModel> create() {
+                return new GitHubDataSource();
             }
-        }
+        };
+
+        LivePagedListBuilder livePagedListBuilder = new LivePagedListBuilder<>(factory, config);
+        LiveData<PagedList> listLiveData = livePagedListBuilder.build();
+
+        listLiveData.observe(this, new Observer<PagedList>() {
+            @Override
+            public void onChanged(PagedList pagedList) {
+                listAdapter.submitList(pagedList);
+            }
+        });
+
+
     }
+
 }
