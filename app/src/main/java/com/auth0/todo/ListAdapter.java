@@ -28,7 +28,9 @@ public class ListAdapter extends PagedListAdapter<JobModel,ViewHolder> {
 
         JobModel currentItem = getItem(position);
         TextView titleTextView = holder.itemView.findViewById(R.id.job_title);
-        titleTextView.setText(currentItem.getId());
+        TextView companyTextView = holder.itemView.findViewById(R.id.company);
+        titleTextView.setText(currentItem.getTitle());
+        companyTextView.setText(currentItem.getCompany());
 
     }
 }

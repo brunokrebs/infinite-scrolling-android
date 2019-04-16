@@ -8,7 +8,7 @@ import retrofit2.http.Query;
 
 public interface GitHubApi {
 
-    @GET("/positions.json?description=android")
+    @GET("/positions.json?description=web")
     Call<List<JobModel>> getAndroidJobs(/*@Query("description") String jobDescription,*/@Query("page") int page);
 
 }
