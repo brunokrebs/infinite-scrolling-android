@@ -27,7 +27,9 @@ public class GitHubDataSource extends PageKeyedDataSource<String, JobModel> {
         gitHubApi.getAndroidJobs(pageCount).enqueue(new Callback<List<JobModel>>() {
             @Override
             public void onResponse(Call<List<JobModel>> call, Response<List<JobModel>> response) {
-                callback.onResult(response.body(),String.valueOf(pageCount),String.valueOf(pageCount+1));
+                Log.d("IDEE -- loadInitial", String.valueOf(pageCount));
+                pageCount++;
+                callback.onResult(response.body(),String.valueOf(pageCount),String.valueOf(pageCount));
             }
 
             @Override
@@ -39,26 +41,7 @@ public class GitHubDataSource extends PageKeyedDataSource<String, JobModel> {
     }
 
     @Override
-    public void loadBefore(@NonNull LoadParams<String> params, @NonNull final LoadCallback<String, JobModel> callback) {
-
-        gitHubApi.getAndroidJobs(pageCount).enqueue(new Callback<List<JobModel>>() {
-            @Override
-            public void onResponse(Call<List<JobModel>> call, Response<List<JobModel>> response) {
-                if(pageCount > 1) {
-                    pageCount = pageCount-1;
-                } else {
-                    pageCount = 1;
-                }
-                callback.onResult(response.body(),String.valueOf(pageCount));
-            }
-
-            @Override
-            public void onFailure(Call<List<JobModel>> call, Throwable t) {
-
-            }
-        });
-
-    }
+    public void loadBefore(@NonNull LoadParams<String> params, @NonNull final LoadCallback<String, JobModel> callback) { }
 
     @Override
     public void loadAfter(@NonNull LoadParams<String> params, @NonNull final LoadCallback<String, JobModel> callback) {
@@ -66,6 +49,7 @@ public class GitHubDataSource extends PageKeyedDataSource<String, JobModel> {
             @Override
             public void onResponse(Call<List<JobModel>> call, Response<List<JobModel>> response) {
                 pageCount++;
+                Log.d("IDEE -- LoadAfter", String.valueOf(pageCount));
                 callback.onResult(response.body(),String.valueOf(pageCount));
             }
 

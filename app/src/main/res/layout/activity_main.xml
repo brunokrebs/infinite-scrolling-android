@@ -11,6 +11,7 @@
         android:id="@+id/recycler_view_jobs"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:scrollbars="vertical"
         android:divider="@null"
         android:paddingTop="8dp"
         android:paddingBottom="8dp"
