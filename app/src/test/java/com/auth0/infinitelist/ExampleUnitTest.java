@@ -1,4 +1,4 @@
-package com.auth0.todo;
+package com.auth0.infinitelist;
 
 import org.junit.Test;
 
