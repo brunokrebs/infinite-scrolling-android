@@ -42,7 +42,6 @@ public class GitHubDataSource extends PageKeyedDataSource<String, JobModel> {
         gitHubApi.getAndroidJobs(pageCount).enqueue(new Callback<List<JobModel>>() {
             @Override
             public void onResponse(Call<List<JobModel>> call, Response<List<JobModel>> response) {
-                Log.d("IDEE -- loadInitial", String.valueOf(pageCount));
                 callback.onResult(response.body(),String.valueOf(pageCount),String.valueOf(pageCount+1));
                 status.postValue(new NetworkState(Status.SUCCESS));
                 pageCount++;
@@ -67,7 +66,6 @@ public class GitHubDataSource extends PageKeyedDataSource<String, JobModel> {
             @Override
             public void onResponse(Call<List<JobModel>> call, Response<List<JobModel>> response) {
                 pageCount++;
-                Log.d("IDEE -- LoadAfter", String.valueOf(pageCount));
                 callback.onResult(response.body(),String.valueOf(pageCount));
                 status.postValue(new NetworkState(Status.SUCCESS));
             }
