@@ -1,5 +1,5 @@
-# Android Tutorial: Building and Securing Your First App (Part 1)
+# Android Tutorial: Infinite scrolls in Android
 
-In this tutorial, you will learn how to develop a simple to-do list Android app from scratch. Here, you will start by scaffolding your app with the help of Android Studio. After that, you will build a list to show to-do items and you will create a form to enable users to update this list. In the end, you will also learn how to secure your to-do app with Auth0.
+In this tutorial, you will learn how to develop an Android app that has infinite scrolling. Here, you will learn how to create an Android project with Android Studio, build a list that fetches data from an API and continues fetching for as long as you keep scrolling. You will also learn how to handle network error cases.
 
-Read more at: https://auth0.com/blog/android-tutorial-building-and-securing-your-first-app-part-1/
+Read more at: 
