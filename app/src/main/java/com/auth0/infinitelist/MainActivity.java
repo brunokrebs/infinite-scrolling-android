@@ -1,7 +1,6 @@
 package com.auth0.infinitelist;
 
 import android.os.Bundle;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -36,16 +35,12 @@ public class MainActivity extends AppCompatActivity {
         LivePagedListBuilder livePagedListBuilder = new LivePagedListBuilder<>(factory, config);
         LiveData<PagedList> listLiveData = livePagedListBuilder.build();
 
-        listLiveData.observe(this, pagedList -> {
-            Log.d("IDEE","PagedList updated " + pagedList.size());
-            listAdapter.submitList(pagedList);
-        });
+        listLiveData.observe(this, listAdapter::submitList);
 
         LiveData<NetworkState> networkStateLiveData =
                 Transformations.switchMap(factory.gitHubDataSource, input -> input.status);
 
         networkStateLiveData.observe(this, listAdapter::updateNetworkState);
-
 
     }
 
